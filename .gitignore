@@ -1,0 +1,5 @@
+checkpoint.pth
+output.wav
+__pycache__/
+*.pyc
+.venv/
