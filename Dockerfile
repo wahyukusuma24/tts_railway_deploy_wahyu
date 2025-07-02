@@ -1,21 +1,26 @@
-# Gunakan base image yang ringan
 FROM python:3.10-slim
 
-# Set direktori kerja
+# Install OS dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    ffmpeg \
+    libsndfile1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
 WORKDIR /app
 
-# Install dependensi sistem minimum
-RUN apt-get update && apt-get install -y \
-    libsndfile1 \
- && rm -rf /var/lib/apt/lists/*
+# Copy dependencies
+COPY requirements.txt ./
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-# Salin requirements dan install dependensi Python
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip \
- && pip install --no-cache-dir -r requirements.txt
+# Copy app files
+COPY ./app /app
 
-# Salin semua source code, kecuali file besar
-COPY . .
+# Expose port for Railway
+ENV PORT 8000
+EXPOSE 8000
 
-# Jalankan aplikasi dengan Uvicorn
+# Run FastAPI app with Uvicorn
 CMD ["uvicorn", "tts_server:app", "--host", "0.0.0.0", "--port", "8000"]

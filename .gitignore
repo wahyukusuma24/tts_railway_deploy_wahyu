@@ -1,5 +1,16 @@
-checkpoint.pth
-output.wav
 __pycache__/
 *.pyc
-.venv/
+*.pyo
+*.so
+*.wav
+*.mp3
+*.flac
+
+*.onnx
+venv/
+.env
+output.wav
+
+# VSCode / editor config
+.vscode/
+.idea/
